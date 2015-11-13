@@ -1,9 +1,346 @@
-Line 7 
-Line 6
-Line 5
-Line 2
-Line 3
-Line 4
-Line 5
-Line 6
-Line 1
+jQuery.noConflict();
+jQuery( document ).ready( function ( $ ) {
+
+  //Show write review modal
+  $( '.write-review-modalXX' ).on( 'click', function () {
+    $( '#write-review-modal' ).slideDown( 500 );
+  } );
+  
+  $( '.close-review' ).on( 'click', function () {
+    $( '#write-review-modal' ).slideUp( 300 );
+  } );
+  
+  //fade for cart
+  $( '#carttop-close-btn' ).live( 'click', function () {
+    $( '#ajax-cart' ).fadeOut( 300 );
+  } );
+  
+  //Overwirte AVS text
+  $( "#avalaraAccept" ).html( "Accept & Continue" );
+  
+  /********Google Analytics tagging - main navigation tab*************/
+  $( "#nav li a" ).not( ".sublist li a" ).each( function () {
+    var navTab     = $( this ).text().toLowerCase().replace( /\W/g, '' );
+    var ga_tag_tab = "tab_" + navTab + "," + "tab_" + navTab + "," + "tab_" + navTab;
+    //Strip out ALL whitepspace from the tab
+    ga_tag_tab  = ga_tag_tab.replace( /\s+/g, '' );
+    var gaArray = ga_tag_tab.split( "," );
+    //Final GA tag to be assigned a click event
+    var finalTag = "_gaq.push(['_trackEvent', '" + gaArray[ 0 ] + "', '" + gaArray[ 1 ] + "', '" + gaArray[ 2 ] + "']);";
+    //Add onclick attribute to the navigation tabs
+    $( this ).attr( 'onclick', finalTag );
+  } );
+  
+  /***********Google Analytics tagging - mega-navigation links***************/
+  $( ".sublist li a" ).each( function () {
+    //Grab the parent tab for this sublist link
+    var parentTab = $( this ).parent().parent().parent().parent().parent().parent().parent().find( 'a' ).first().text();
+    var cat_lnk   = $( this ).text().toLowerCase().replace( /\s+/g, '' );
+    //Strip out unwanted characters. This will provide clean data for the analyst.
+    parentTab        = parentTab.toLowerCase().replace( /\W/g, '' );
+    cat_lnk          = cat_lnk.replace( /\W/g, '' );
+    var meganav_tag  = "tab_" + parentTab + "," + "dep_" + parentTab + "," + "cat_" + cat_lnk;
+    var meganavArray = meganav_tag.split( "," );
+    //Final mega nav link tag
+    var mn_finaltag = "_gaq.push(['_trackEvent', '" + meganavArray[ 0 ] + "', '" + meganavArray[ 1 ] + "', '" + meganavArray[ 2 ] + "']);";
+    //Add onlick attribute to this anchor tag
+    $( this ).attr( 'onclick', mn_finaltag );
+  } );
+  
+  /***************Google Analytics tagging - content links***************/
+  $( ".filtertoggle > ul li a" ).each( function ( index ) {
+    var myParentTab  = $( this ).parent().parent().prev( "h2" ).text();
+    var content_link = $( this ).text();
+    content_link     = content_link.replace( /\W/g, '' ).toLowerCase().trim();
+
+    var contentTag      = "tab_" + myParentTab + "," + "dep_" + myParentTab + "," + "cat_" + content_link;
+    var contentTagArray = contentTag.split( "," );
+    var finalContentTag = "_gaq.push(['_trackEvent', '" + contentTagArray[ 0 ] + "', '" + contentTagArray[ 1 ] + "', '" + contentTagArray[ 2 ] + "']);";
+    $( this ).attr( 'onclick', finalContentTag );
+
+  } );
+
+
+  /************Filter toggle fix*******************/
+  $.each( $( ".filtertoggle h2 a" ), function ( index ) {
+    //Grab current location
+    var contentLoc = window.location.pathname;
+
+    //If Learn More subcats
+    if ( contentLoc == "/Our-Vision/Our-Vision.htm" || contentLoc == "/facts-and-myths/facts-and-myths.htm" || contentLoc == "/Product-Materials/Product-Materials.htm" ) {
+      //If Learn more tab
+      if ( index === 0 ) {
+        $( this ).parent( "h2" ).removeClass( 'ftHeadOpen' ).addClass( 'ftHeadClosed' );
+      }
+      else {
+        $( this ).parent( "h2" ).next( "ul" ).hide();
+      }
+    }
+
+    //If DIY subcats
+    if ( contentLoc == "/How-To/How-To.htm" || contentLoc == "/Guides/Guides.htm" || contentLoc == "/Upcycling-and-DIY-Projects/Upcycling-and-DIY-Projects.htm" ) {
+      if ( index === 1 ) {
+        $( this ).parent( "h2" ).removeClass( 'ftHeadOpen' ).addClass( 'ftHeadClosed' );
+      }
+      else {
+        $( this ).parent( "h2" ).next( "ul" ).hide();
+      }
+    }
+
+    //If Get Involved subcats
+    if ( contentLoc == "/Green-Campaigns/Green-Campaigns.htm" || contentLoc == "/Tools-to-Influence-Policy/Tools-to-Influence-Policy.htm" || contentLoc == "/Affiliate-Programs/Affiliate-Programs.htm" ) {
+      if ( index === 2 ) {
+        $( this ).parent( "h2" ).removeClass( 'ftHeadOpen' ).addClass( 'ftHeadClosed' );
+      }
+      else {
+        $( this ).parent( "h2" ).next( "ul" ).hide();
+      }
+    }
+  } );
+  
+  //Filter toggle click event
+  $( ".filtertoggle h2.ftHeadOpen" ).live( 'click', function () {
+    $( this ).next( "ul" ).stop( true, true ).slideToggle( 600 );
+    $( this ).removeClass( 'ftHeadOpen' ).addClass( 'ftHeadClosed' );
+  } );
+  
+  $( ".filtertoggle h2.ftHeadClosed" ).live( 'click', function () {
+    $( this ).next( "ul" ).stop( true, true ).slideToggle( 600 );
+    $( this ).removeClass( 'ftHeadClosed' ).addClass( 'ftHeadOpen' );
+  } );
+  
+
+  /*************Google Analytics - Video Callout tagging*****************/
+  $( "#video_callout" ).each( function () {
+    var productName = $( "#prod_info h1" ).not( "#prod_info h1 span" ).text();
+    productName     = productName.replace( /\d+/g, '' )
+    //Final GA video tag to be assigned a click event
+    var vdTag = "_gaq.push(['_trackEvent', 'Product-Page', 'View-Video', '" + productName + "']);";
+    //Add onclick attribute to the navigation tabs
+    $( this ).attr( 'onclick', vdTag );
+  } );
+  
+  /************Hide all sublist2 links except Shop All************/
+  $.each( $( '.sublist2 li a' ), function ( index ) {
+    var sublist2Txt = $( this ).text();
+    if ( sublist2Txt != "Shop All" ) {
+      $( this ).hide();
+    }
+  } );
+  
+  /***********Left Rail Filters Tagging******************/
+  $.each( $( '.filtertoggle ul li > .ratetxt' ), function ( index ) {
+    var toggleHead = $( this ).text();
+    var ratingTxt  = $( this ).parent().parent().prev( "h2" ).text();
+    ratingTxt      = ratingTxt.replace( /\W/g, '' );
+    toggleHead     = toggleHead.replace( /\W/g, '' );
+    var filter_tag = "filter" + "," + ratingTxt + "," + toggleHead;
+    //Split the filter array tag by a comma
+    filter_Array       = filter_tag.split( "," );
+    var finalFilterTag = "_gaq.push(['_trackEvent', '" + filter_Array[ 0 ] + "', '" + filter_Array[ 1 ] + "', '" + filter_Array[ 2 ] + "']);";
+    //Add onlick event to the parent list item
+    $( this ).parent( "li" ).attr( 'onclick', finalFilterTag );
+    
+  } );
+  
+  /*************Left Rail Filter Ratings Tagging**************/
+  $.each( $( '.filtertoggle ul li > div:lt(5)' ), function ( index ) {
+    var rating = $( this ).parent().parent().prev( "h2" ).text();
+    //Since 5 ratings is first, reverse the order of the numbering
+    var n              = 5 - index;
+    var rating_tag     = "filter" + "," + "rating" + "," + n + " star";
+    rating_Array       = rating_tag.split( "," );
+    var finalRatingTag = "_gaq.push(['_trackEvent', '" + rating_Array[ 0 ] + "', '" + rating_Array[ 1 ] + "', '" + rating_Array[ 2 ] + "']);";
+    //Add onclick event to the parent list item for each star rating
+    $( this ).parent( "li" ).attr( 'onclick', finalRatingTag );
+
+  } );
+  
+  
+  /**************Content Drop Down Menu***********/
+  $( '#contentNav li.resourceNavLi' ).hoverIntent( function ( n ) {
+    $( this ).children( '.contentSubnav' ).stop( true, true ).fadeIn( 400 );
+  }, function () {
+    $( this ).children( '.contentSubnav' ).stop( true, true ).fadeOut( 400 );
+  } );
+
+
+  ////---------------- BEGIN EMAIL SIGNUP MODAL --------------
+  //if ( $( "#email-pop-wrapper" ).length > 0 ) {
+  //
+  //  if ( !getCookie( "emailModal" ) && switches.modal_email_switch == 'on' ) {
+  //    //Only show the pop moments after the page loads
+  //    setTimeout( function () {
+  //      $( '#backdrop' ).fadeIn( 200, function () {
+  //        $( '#email-pop-wrapper' ).fadeIn( 800 );
+  //      } );
+  //    }, 600 );
+  //  }
+  //
+  //  $( '.email-pop-close, #backdrop, #email-pop-wrapper' ).on( 'click', function () {
+  //    //Hide backdrop and the email modal
+  //    $( '#email-pop-wrapper' ).fadeOut( 200, function () {
+  //      $( '#backdrop' ).fadeOut( 200 );
+  //    } );
+  //    setCookies();
+  //    $( '#allpageswrap' ).css( 'z-index', '' );
+  //  } );
+  //
+  //  $( '#email-pop' ).on( 'click', function ( e ) {
+  //    e.stopPropagation();
+  //  } );
+  //}
+  ////---------------- END EMAIL SIGNUP MODAL --------------
+  
+  //Set cookies for email modal - expire in 90 days
+  function setCookies() {
+    var dateObj     = new Date();
+    dateObj.setTime( dateObj.getTime() + (90 * 24 * 60 * 60 * 1000) );
+    var expires     = "; expires=" + dateObj.toGMTString();
+    document.cookie = "emailModal=true" + expires + "; path=/";
+  }
+  
+  //Internet Explorer is awful. Use the code below to fix opacity issue in IE8 for the email modal
+  if ( $.browser.msie && parseInt( $.browser.version, 10 ) === 8 ) {
+    $( '#backdrop' ).css( 'filter', 'alpha(opacity=50)' );
+  }
+  //Email sign up - Pop up
+  $( 'body' ).on( 'click', '#signgo-modal', function () {
+    var theem = $( "#signem-modal" ).val();
+
+    if ( !validateEmailAddress( theem ) ) {
+      alert( "Please enter a valid email address." );
+    }
+  } );
+  
+  /*****************************Media Forge pixel**********************************/
+  var merchID   = parseInt( 1650 );
+  var productID = parseInt( $( "#prod_code" ).text() );
+  var cartTotal = $( '.cart-subtotal .value' ).text().replace( "$", "" );
+  
+  //Home page pixel
+  if ( $( '#mediaforgehome' ).length > 0 ) {
+    $( 'body' ).append( "<div class='mediaforgehome'><script type='text/javascript' src='//tags.mediaforge.com/js/" + merchID + "'></script></div>" );
+  }
+  
+  //Product page pixel
+  if ( $( '#mediaforgeproduct' ).length > 0 ) {
+    $( 'body' ).append( "<div class='mediaforgeproduct'><script type='text/javascript' src='//tags.mediaforge.com/js/" + merchID + "/?prodID=" + productID + "'></script></div>" );
+  }
+  
+  //Cart page pixel
+  if ( $( '#mediaforgecart' ).length > 0 ) {
+    var prodString = "";
+    $.each( $( '.cart-row' ), function ( i ) {
+      //Grab product ID string
+      var prodID = $( this ).find( '.prodopts' ).children( 'strong' ).text();
+      //Pixel requires a comma on the end
+      prodID = prodID + ",";
+      //Remove comma on the last product id
+      if ( i === $( '.cart-row' ).length - 1 ) {
+        prodID = prodID.replace( ",", "" );
+      }
+      //Append the product ids together
+      prodString += prodID;
+    } );
+    //Documentation requires the cart total to be a number
+    cartTotal = parseFloat( cartTotal );
+    $( 'body' ).append( "<div class='mediaforgecart'><script type='text/javascript' src='//tags.mediaforge.com/js/" + merchID + "/?cart=" + cartTotal + "&prodID=" + prodString + "'></script></div>" );
+    
+  }
+  
+  
+  /**********************Cart page tagging*************************/
+  var cartUpdate     = "_gaq.push(['_trackEvent', 'Checkout', 'Cart', 'Cart-Update']);";
+  var cartCheckout   = "_gaq.push(['_trackEvent', 'Checkout', 'Cart', 'Cart-Checkout']);";
+  var cartRemove     = "_gaq.push(['_trackEvent', 'Checkout', 'Cart', 'Cart-Remove']);";
+  var cartApplyPromo = "_gaq.push(['_trackEvent', 'Checkout', 'Cart', 'Cart-Apply Promo']);";
+  var cartPaypal     = "_gaq.push(['_trackEvent', 'Checkout', 'Cart', 'Cart-Paypal']);";
+
+  //Apply onclick attribute with the tagging string
+  $( '.cart-submit' ).attr( "onClick", cartUpdate );
+  //$('.cart-btn').attr("onClick", cartUpdate);
+  $( '.cart-remove' ).attr( "onClick", cartRemove );
+  $( '.apply-promo' ).attr( "onClick", cartApplyPromo );
+  $( '#imgPayPalCheckout' ).attr( "onClick", cartPaypal );
+
+
+} );
+function getCookie( c_name ) {
+  var i, x, y, ARRcookies = document.cookie.split( ";" );
+  for ( i = 0; i < ARRcookies.length; i++ ) {
+    x = ARRcookies[ i ].substr( 0, ARRcookies[ i ].indexOf( "=" ) );
+    y = ARRcookies[ i ].substr( ARRcookies[ i ].indexOf( "=" ) + 1 );
+    x = x.replace( /^\s+|\s+$/g, "" );
+    if ( x == c_name ) {
+      return unescape( y );
+    }
+  }
+}
+
+
+/*** SilverPop  ***/
+jQuery( function ( $ ) {
+
+  /* Create a new account */
+  /*if($('#ctl00_content_ctl00_btnSave').length > 0) {
+
+   $('body').append('<div id="ctl00_content_ctl01_hdnAvalara" style="display:none"></div>');
+   $('#lastStepTableHeader').remove();
+   $('#ctl00_content_ctl00_btnSave').on('click',function(event){
+   if (event.preventDefault) {
+   event.preventDefault();
+   } else {
+   event.returnValue = false;
+   }
+   var email       = $('#ctl00_content_ctl00_txtEmail').val();
+   var firstName   = $('#ctl00_content_ctl00_txtFirstName').val();
+   var lastName    = $('#ctl00_content_ctl00_txtLastName').val();
+   var zipCode     = $('#ctl00_content_ctl00_txtZip').val();
+   var state       = $('#ctl00_content_ctl00_ddlState').val();
+
+   data = 'email=' + email + '&firstname=' + firstName + '&lastname=' + lastName +
+   '&zip=' + zipCode + '&state=' + state + '&sourceid=1021';
+
+   if(email !== '' && firstName !== '' & $('#ctl00_content_ctl00_chkEmailOptIn').is(":checked")){
+   $.post("/SilverPop/silverpop.asp?" + data, {}, function(data) { $('#aspnetForm').submit() })
+   }
+   else {
+   $('#aspnetForm').submit();
+   }
+
+
+   })
+
+   }*/
+
+  /* End Create a new account */
+
+  /* Checkout page*/
+
+  if ( $( '#ctl00_content_btnCustomerGuest' ).length > 0 ) {
+
+    $( '#email-pop-wrapper' ).hide();
+
+    var silverpop_email = "";
+
+    $( '#ctl00_content_btnCustomerGuest' ).on( 'click', function () {
+      silverpop_email = $( '#ctl00_content_receiptEmail' ).val();
+    } )
+
+    $( '#ctl00_content_btnPaymentContinue' ).on( 'click', function () {
+      if ( silverpop_email !== "" ) {
+        $.post( "/SilverPop/silverpop.asp?email=" + silverpop_email, {}, function ( data ) {
+        } )
+      }
+    } )
+
+    $( '#email-optin' ).on( 'click', function () {
+      $( '#backdrop' ).fadeIn( 200, function () {
+        $( '#email-pop-wrapper' ).fadeIn( 800 );
+      } );
+      return false;
+    } )
+  }
+} )
+/*** End SilverPop  ***/
