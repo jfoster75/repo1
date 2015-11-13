@@ -1,6 +1,11 @@
 Line 7 
+<<<<<<< HEAD
 Line 6
 Line 5
+=======
+Line 2
+Line 3
+>>>>>>> origin/master
 Line 4
 Line 5
 Line 6
