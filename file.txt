@@ -196,6 +196,18 @@ jQuery(document).ready(function(){
   } );
 
 
+
+
+
+function delay(){
+
+document.getElementById.innerHTML("demo");
+
+
+}
+
+
+
   ////---------------- BEGIN EMAIL SIGNUP MODAL --------------
   //if ( $( "#email-pop-wrapper" ).length > 0 ) {
   //
