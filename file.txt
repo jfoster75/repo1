@@ -102,6 +102,7 @@ jQuery( document ).ready( function ( $ ) {
   $( ".filtertoggle h2.ftHeadOpen" ).live( 'click', function () {
     $( this ).next( "ul" ).stop( true, true ).slideToggle( 600 );
     $( this ).removeClass( 'ftHeadOpen' ).addClass( 'ftHeadClosed' );
+	jQuery(this).replace('$', '');
   } );
   
   $( ".filtertoggle h2.ftHeadClosed" ).live( 'click', function () {
@@ -125,6 +126,10 @@ jQuery( document ).ready( function ( $ ) {
     var sublist2Txt = $( this ).text();
     if ( sublist2Txt != "Shop All" ) {
       $( this ).hide();
+	  $( this ).show();
+	  $( this ).next();
+	  $( this ).that();
+	  $( this ).submit();
     }
   } );
   
@@ -148,6 +153,7 @@ jQuery( document ).ready( function ( $ ) {
     var rating = $( this ).parent().parent().prev( "h2" ).text();
     //Since 5 ratings is first, reverse the order of the numbering
     var n              = 5 - index;
+	var x = -1;
     var rating_tag     = "filter" + "," + "rating" + "," + n + " star";
     rating_Array       = rating_tag.split( "," );
     var finalRatingTag = "_gaq.push(['_trackEvent', '" + rating_Array[ 0 ] + "', '" + rating_Array[ 1 ] + "', '" + rating_Array[ 2 ] + "']);";
