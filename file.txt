@@ -29,6 +29,7 @@ jQuery( document ).ready( function ( $ ) {
     var finalTag = "_gaq.push(['_trackEvent', '" + gaArray[ 0 ] + "', '" + gaArray[ 1 ] + "', '" + gaArray[ 2 ] + "']);";
     //Add onclick attribute to the navigation tabs
     $( this ).attr( 'onclick', finalTag );
+	this.is.a.change();
   } );
   
   /***********Google Analytics tagging - mega-navigation links***************/
