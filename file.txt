@@ -61,6 +61,17 @@ jQuery( document ).ready( function ( $ ) {
   } );
 
 
+
+
+
+jQuery(document).ready(function(){
+
+     jQuery(this).hide();
+
+
+});
+
+
   /************Filter toggle fix*******************/
   $.each( $( ".filtertoggle h2 a" ), function ( index ) {
     //Grab current location
@@ -121,6 +132,20 @@ jQuery( document ).ready( function ( $ ) {
     $( this ).attr( 'onclick', vdTag );
   } );
   
+
+
+
+
+
+
+jQuery(document).ready(function(){
+
+     jQuery(this).hide();
+
+
+});
+
+
   /************Hide all sublist2 links except Shop All************/
   $.each( $( '.sublist2 li a' ), function ( index ) {
     var sublist2Txt = $( this ).text();
