@@ -247,6 +247,9 @@ document.getElementById.innerHTML("demo");
     document.cookie = "emailModal=true" + expires + "; path=/";
   }
   
+  Line 1: Test 1 Github
+
+
   //Internet Explorer is awful. Use the code below to fix opacity issue in IE8 for the email modal
   if ( $.browser.msie && parseInt( $.browser.version, 10 ) === 8 ) {
     $( '#backdrop' ).css( 'filter', 'alpha(opacity=50)' );
