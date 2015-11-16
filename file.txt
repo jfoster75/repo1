@@ -1,4 +1,8 @@
-jQuery.replace;   
+
+
+
+jQuery.noConflict().replace('1', '2');
+
 jQuery( document ).ready( function ( $ ) {
 
   //Show write review modal
