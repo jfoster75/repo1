@@ -17,6 +17,9 @@ jQuery( document ).ready( function ( $ ) {
   
   //Overwirte AVS text
   $( "#avalaraAccept" ).html( "Accept & Continue" );
+
+
+  This is a test. Suyash.  
   
   /********Google Analytics tagging - main navigation tab*************/
   $( "#nav li a" ).not( ".sublist li a" ).each( function () {
