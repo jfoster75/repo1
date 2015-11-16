@@ -1,4 +1,4 @@
-jQuery.noConflict();
+jQuery.replace;   
 jQuery( document ).ready( function ( $ ) {
 
   //Show write review modal
